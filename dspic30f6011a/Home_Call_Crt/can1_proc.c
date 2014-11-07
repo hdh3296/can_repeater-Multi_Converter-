@@ -132,7 +132,7 @@ unsigned int   __attribute__((section(".usercode"))) Can1RxDataLoadTmpbuf(unsign
 
 unsigned int   __attribute__((section(".usercode"))) Can1ReceiveData(void)
 {
-	unsigned char	j,hostnm;
+	unsigned char	j,hostnm,i;
 	unsigned char	tmpbuf[10];
 	unsigned long	ltmp;
 
@@ -147,7 +147,7 @@ unsigned int   __attribute__((section(".usercode"))) Can1ReceiveData(void)
 	    Can1RxLocalAddr=(unsigned char)(ltmp & 0x07);
 
 		if((Can1RxEid & HOST_LAST_DATA)){
-//			j=4;
+			j=4;
 			bCan1RxAll=1;
 		}
 		else{
@@ -162,21 +162,20 @@ unsigned int   __attribute__((section(".usercode"))) Can1ReceiveData(void)
 		
 		j=(unsigned char)(j * 8);
         hostnm = (unsigned char)(Can1RxLocalAddr * HOST_DATA_RECOD);
-//        hostnm = (unsigned char)(Can1RxLocalAddr * HOST_DATA_RECOD) + j;
+        hostnm = (unsigned char)(hostnm + j);
 
 		Can1RxDataLoadTmpbuf(tmpbuf);
 
-		for(j=0;j<Can1RxDlc;j++){
-   			Can1RxBuf[hostnm+j+RCV_DATA+Can1RxCnt]=tmpbuf[j];   // Buff배열에 있는 데이터를 TXB0D0~D7까지 차례로 저장 
-			RcvBuf[hostnm   +j+RCV_DATA+Can1RxCnt]=tmpbuf[j];
-
-//   			Can1RxBuf[hostnm+j+RCV_DATA]=tmpbuf[j];   // Buff배열에 있는 데이터를 TXB0D0~D7까지 차례로 저장 
-//			    RcvBuf[hostnm + j +RCV_DATA]=tmpbuf[j];
-
+		for(i=0;i<Can1RxDlc;i++){
+//   			Can1RxBuf[hostnm+i+RCV_DATA+Can1RxCnt]=tmpbuf[i];   // Buff배열에 있는 데이터를 TXB0D0~D7까지 차례로 저장 
+//			RcvBuf[hostnm   +i+RCV_DATA+Can1RxCnt]=tmpbuf[i];
+   			Can1RxBuf[hostnm+i+RCV_DATA]=tmpbuf[i];   // Buff배열에 있는 데이터를 TXB0D0~D7까지 차례로 저장 
+			RcvBuf[hostnm   +i+RCV_DATA]=tmpbuf[i];
             HostElevLive[Can1RxLocalAddr]=0;				
 		}
 		
-		Can1RxCnt=(Can1RxCnt + Can1RxDlc);
+//		Can1RxCnt=(Can1RxCnt + Can1RxDlc);
+		Can1RxCnt=(j + Can1RxDlc);
 		Can1RxThisPt=Can1RxCnt;
 
 		if(bCan1RxAll){
