@@ -6,8 +6,8 @@
 
 
 
-#define     CRT_COMPANY				'D'
-#define     MAX_ELEV            	36
+#define     CRT_COMPANY				'A'
+#define     MAX_ELEV            	1
 #define     CRT_TX_DATA_TO_PC   	88   //40   40= baudrate=19200   88= baudrate=38400
 
 ////////////////
@@ -49,7 +49,7 @@
 #define     MAX_SAVE_BUF        HOST_DATA_RECOD * MAX_ELEV
 
 
-#define		HOST_CALL_TIME     		20		//polling time
+#define		HOST_CALL_TIME     		2000		//polling time
 
 
 #ifndef	MY_STRUCTURE
@@ -72,7 +72,7 @@ extern	unsigned	char  	HostElevLive[MAX_ELEV];
 
 
 extern	unsigned	char  	AckWrCmd;
-
+extern	unsigned	char  		bWrCmd;
 
 
 

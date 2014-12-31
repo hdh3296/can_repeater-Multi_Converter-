@@ -87,7 +87,7 @@ unsigned int  CrtCom1Check(void)
 		else			ReqHost[buf_pt].Ho_Host[5]=0;
 
 		BufTxCom1(Com1RxBuffer[0],buf_pt);
-		return(0);
+		return(1);
 	}
 	else if(Com1RxBuffer[2] == 0x24){
 		for(i=0;i<MAX_ELEV;i++){
@@ -110,52 +110,22 @@ unsigned int  CrtCom1Check(void)
 
 		AckWrCmd=1;
 
-		return(0);
+		return(1);
 	}
 
-/*
-	pt=2;
-	for(i=0;i<8;i++)	Can1TxBuf[i] = Com1RxBuffer[pt+i]; 
-	
-	tmpsid1=CRT_COMPANY;
-	tmpsid2=((Com1RxBuffer[0] & 0x78) << 4);
-	tmpsid1=(tmpsid1 | tmpsid2);
 
-	
-	Can1TxDlc=8;
-	Can1TxSid=(unsigned int)(tmpsid1);
-	Can1TxEid=0xfe;
-	if(Com1RxBuffer[0] & 0x01)	Can1TxEid=(Can1TxEid | 0x4000);	
-	if(Com1RxBuffer[0] & 0x02)	Can1TxEid=(Can1TxEid | 0x8000);	
-	if(Com1RxBuffer[0] & 0x04)	Can1TxEid=(Can1TxEid | 0x10000);	
-	if(Com1RxBuffer[0] & 0x80)	Can1TxEid=(Can1TxEid | 0x20000);	
-
-	if(I_AM_LISTENING_MODE==1){
-		if(Com1RxBuffer[4] == 0x0){
-			Can1RxSid=  Can1TxSid;
-			Can1RxEid= (Can1TxEid & 0xffffff00);
-			RxCan1AndTxCom1();
-			return(1);			
-		}
-	}
-
-	if(Can1RxTimer >= 10){
-		if( !Can1TxData(0,0)){
-			Can1RxTimer=0;	
-			return(1);                      
-		}
-	}
-*/
 	return(0);                      
 }
 
 unsigned char	PcCmdWr(void)
 {
 	if(AckWrCmd){
-		if(Can1RxTimer >= 10){
+		if(Can1RxTimer >= 20){
 			if(!Can1TxData(0,0)){
 				AckWrCmd=0;
 				Can1RxTimer=0;
+				bWrCmd=1;
+
 				return(0);
 			}
 			return(1);

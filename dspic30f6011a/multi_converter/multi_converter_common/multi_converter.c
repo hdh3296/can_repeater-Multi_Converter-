@@ -397,7 +397,7 @@ void _ISR _T1Interrupt(void)
 
 		if(Can1PollingTimer < 250) 	Can1PollingTimer++;
 		if(Can2PollingTimer < 250) 	Can2PollingTimer++;
-		if(Can1RxTimer < 250) 		Can1RxTimer++;
+		if(Can1RxTimer < 10000) 		Can1RxTimer++;
 		if(Can2RxTimer < 250) 		Can2RxTimer++;
       	if(Com1SerialTime < 250)	Com1SerialTime++;
       	if(Com2SerialTime < 650)	Com2SerialTime++;

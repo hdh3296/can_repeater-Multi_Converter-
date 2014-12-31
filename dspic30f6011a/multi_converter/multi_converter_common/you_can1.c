@@ -24,7 +24,7 @@ unsigned    char    Can1RxDataTxPointer=0;
 unsigned    char	Can1TxDataTotalCnt=0;
 unsigned    char    Can1TxDataTxPointer=0;
 unsigned	char	Can1PollingTimer=0;
-unsigned	char	Can1RxTimer=0;
+unsigned	int	Can1RxTimer=0;
 unsigned    int    	Can1ContCrc;
 
 
