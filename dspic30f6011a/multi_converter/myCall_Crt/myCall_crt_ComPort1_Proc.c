@@ -82,8 +82,9 @@ unsigned int  CrtCom1Check(void)
 	if(Com1RxBuffer[2] == 0x23){
 
 		buf_pt=HogiSelect();
-		if(buf_pt >= 0xff)	return(0);		
-		if(ReqHost[buf_pt].Ho_Host[5]==0)	return(0);
+		if(buf_pt >= 0xff)	return(1);		
+		if(ReqHost[buf_pt].Ho_Host[5]==0)	
+			return(1);
 		else			ReqHost[buf_pt].Ho_Host[5]=0;
 
 		BufTxCom1(Com1RxBuffer[0],buf_pt);

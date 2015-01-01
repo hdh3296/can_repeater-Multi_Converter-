@@ -6,15 +6,15 @@
 
 
 
-#define     CRT_COMPANY				'A'
-#define     MAX_ELEV            	1
-#define     CRT_TX_DATA_TO_PC   	88   //40   40= baudrate=19200   88= baudrate=38400
+#define     CRT_COMPANY				'D'
+#define     MAX_ELEV            	36
+#define     CRT_TX_DATA_TO_PC   	40   //40   40= baudrate=19200   88= baudrate=38400
 
 ////////////////
 //////BAUD_RATE_9600,BAUD_RATE_19200,BAUD_RATE_38400,BAUD_RATE_57600//////////
 ///////////////
-#define		COM1_BAUD		BAUD_RATE_38400		
-#define		COM2_BAUD		BAUD_RATE_38400	
+#define		COM1_BAUD		BAUD_RATE_19200		
+#define		COM2_BAUD		BAUD_RATE_19200	
 
 
 
