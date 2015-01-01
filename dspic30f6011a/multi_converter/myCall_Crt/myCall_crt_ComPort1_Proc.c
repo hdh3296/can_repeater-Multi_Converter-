@@ -120,7 +120,7 @@ unsigned int  CrtCom1Check(void)
 unsigned char	PcCmdWr(void)
 {
 	if(AckWrCmd){
-		if(Can1RxTimer >= 20){
+		if(Can1RxTimer >= 10){
 			if(!Can1TxData(0,0)){
 				AckWrCmd=0;
 				Can1RxTimer=0;

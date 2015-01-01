@@ -62,8 +62,11 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Start(void)
 	if( !PcCmdWr()){
 		if( !Normal_Read(ThisHostSelect)){
 			ThisHostSelect++;
+			bWrCmd = 0;
 		}
 	}
+
+	
 
 
 

@@ -32,7 +32,7 @@ extern	unsigned    char    Can1RxDataTxPointer;
 extern	unsigned    char	Can1TxDataTotalCnt;
 extern	unsigned    char    Can1TxDataTxPointer;
 extern	unsigned	char	Can1PollingTimer;
-extern	unsigned	int	Can1RxTimer;
+extern	unsigned	char	Can1RxTimer;
 
 
 extern	unsigned    char    Can1MySrcAddr;

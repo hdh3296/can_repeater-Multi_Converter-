@@ -49,7 +49,7 @@
 #define     MAX_SAVE_BUF        HOST_DATA_RECOD * MAX_ELEV
 
 
-#define		HOST_CALL_TIME     		2000		//polling time
+#define		HOST_CALL_TIME     		20		//polling time
 
 
 #ifndef	MY_STRUCTURE

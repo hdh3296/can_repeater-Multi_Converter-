@@ -151,8 +151,10 @@ unsigned int   __attribute__((section(".usercode"))) Can1ReceiveData(void)
 			Can1RxThisPt=Can1RxCnt;
 		}
 
-
-	
+		if(bCan1RxAll & bWrCmd){
+				bWrCmd = 0;
+				BufTxCom1(Com1RxBuffer[0],0);
+		}	
 	}
 	else{
         bCan1RxAll=0;
