@@ -82,12 +82,13 @@ unsigned int  CrtCom1Check(void)
 	if(Com1RxBuffer[2] == 0x23){
 
 		buf_pt=HogiSelect();
-		if(buf_pt >= 0xff)	return(0);		
-		if(ReqHost[buf_pt].Ho_Host[5]==0)	return(0);
+		if(buf_pt >= 0xff)	return(1);		
+		if(ReqHost[buf_pt].Ho_Host[5]==0)	
+			return(1);
 		else			ReqHost[buf_pt].Ho_Host[5]=0;
 
 		BufTxCom1(Com1RxBuffer[0],buf_pt);
-		return(0);
+		return(1);
 	}
 	else if(Com1RxBuffer[2] == 0x24){
 		for(i=0;i<MAX_ELEV;i++){
@@ -110,7 +111,7 @@ unsigned int  CrtCom1Check(void)
 
 		AckWrCmd=1;
 
-		return(0);
+		return(1);
 	}
 
 /*
@@ -156,6 +157,8 @@ unsigned char	PcCmdWr(void)
 			if(!Can1TxData(0,0)){
 				AckWrCmd=0;
 				Can1RxTimer=0;
+				bWrCmd=1;
+
 				return(0);
 			}
 			return(1);

@@ -1,3 +1,5 @@
+// 멀티컨버터 
+// 2015.01.02 : MyCall 제어 요청시에 리턴 값 오도록 수정 
 
 #include <p30f6011a.h>            
 
@@ -38,6 +40,8 @@ volatile tagReqHost ReqHost[MAX_ELEV];
 unsigned	char  	ThisHostSelect=0;
 unsigned	char  	AckWrCmd=0;
 
+unsigned	char	bWrCmd = 0;
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,6 +64,7 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Start(void)
 	if( !PcCmdWr()){
 		if( !Normal_Read(ThisHostSelect)){
 			ThisHostSelect++;
+			bWrCmd = 0;
 		}
 	}
 #else

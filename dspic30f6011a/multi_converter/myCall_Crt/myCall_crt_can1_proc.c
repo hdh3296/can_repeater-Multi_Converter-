@@ -169,6 +169,7 @@ unsigned int   __attribute__((section(".usercode"))) Can1ReceiveData(void)
 	unsigned char	j,AckHost;
 	unsigned int	hostnm;
 	unsigned char	tmpbuf[10];
+	unsigned char buf_pt;
 
 
 	Can1RxLiveCnt=0;
@@ -247,7 +248,14 @@ unsigned int   __attribute__((section(".usercode"))) Can1ReceiveData(void)
 			Can1RxCnt=(Can1RxCnt + Can1RxDlc);
 			Can1RxThisPt=Can1RxCnt;
 		}
-	
+#ifdef	I_AM_CALL_HOST
+		if(bCan1RxAll & bWrCmd){
+				bWrCmd = 0;
+				buf_pt=HogiSelect();
+				if(buf_pt >= 0xff)	return(0);			
+				BufTxCom1(Com1RxBuffer[0],buf_pt);
+		}	
+#endif
 	}
 	else{
         bCan1RxAll=0;
