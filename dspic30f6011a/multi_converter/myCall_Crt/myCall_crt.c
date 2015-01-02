@@ -1,5 +1,5 @@
 // 멀티컨버터 
-// 2015.01.02 : 제어 요청시에 리턴 값 오도록 수정 
+// 2015.01.02 : MyCall 제어 요청시에 리턴 값 오도록 수정 
 
 #include <p30f6011a.h>            
 
@@ -67,11 +67,6 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Start(void)
 			bWrCmd = 0;
 		}
 	}
-
-	
-
-
-
 #else
 	if(Com1RxStatus==RX_GOOD){
 		if(CrtCom1Check()){

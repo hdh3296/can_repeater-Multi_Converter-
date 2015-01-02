@@ -63,7 +63,105 @@ unsigned int   __attribute__((section(".usercode"))) Can1RxDataLoadTmpbuf(unsign
 }
 
 
+/*
+unsigned int   __attribute__((section(".usercode"))) ThisAckHostSel(unsigned int mode)
+{
+	unsigned int i,j,ThisHostDataPt=0xffff;
 
+	if(I_AM_LISTENING_MODE == 0){
+		j=0;
+		ThisHostDataPt=0;		
+	}
+	else{
+		for(i=0;i<MAX_ELEV;i++){
+			if( ( (ReqHost[i].HostSid == Can1RxSid)  && ( (ReqHost[i].HostEid & 0xffffff00) == (Can1RxEid & 0xffffff00) ))){
+				j=i;
+        		ThisHostDataPt = (unsigned int)(i * HOST_DATA_RECOD);
+				i=MAX_ELEV;		
+			}  
+		}
+	}		
+
+
+
+	if(mode == 0){
+		HostElevLive[j]=0;
+	}
+	else{
+		if(HostElevLive[j] > HOST_LIVE_TIME){
+			ThisHostDataPt=0xffff;		
+		}		
+	}
+
+	return(ThisHostDataPt);				
+}
+*/
+
+
+
+/*
+
+unsigned int	RxCan1AndTxCom1(void)
+{  
+	unsigned char i;
+	unsigned tmpGroup,tmpLocal;
+   
+ 	tmpGroup= (unsigned char)(Can1RxSid >> 4);
+	if(Can1RxEid & 0x20000)	tmpGroup= (tmpGroup | 0x80);	
+ 	tmpGroup= (unsigned char)(tmpGroup & 0xf8);
+
+ 	tmpLocal= 0;
+	if(Can1RxEid & 0x4000)	tmpLocal= (tmpLocal | 0x01);	
+	if(Can1RxEid & 0x8000)	tmpLocal= (tmpLocal | 0x02);	
+	if(Can1RxEid & 0x10000)	tmpLocal= (tmpLocal | 0x04);	
+
+
+	if(Com1RxBuffer[0] != (tmpGroup | tmpLocal)){
+		bCan1RxAll=0;
+		return(0);
+	}
+
+
+	if(Com1TxBuffer[2] == 0x24){
+	    Com1TxBuffer[0]  = 0xfe;   
+	    Com1TxBuffer[1]  = (tmpGroup | tmpLocal);
+	
+	    Com1TxBuffer[2]  = 0xA4;                                        
+		Com1TxBuffer[3]  = 13;
+	}		
+	else{ 
+	    Com1TxBuffer[0]  = 0xfe;   
+	    Com1TxBuffer[1]  = (tmpGroup | tmpLocal);	
+	    Com1TxBuffer[2]  = 0xA3;                                        
+		Com1TxBuffer[3]  = CRT_TX_DATA_TO_PC;        //HOST_DATA_RECOD;
+
+	}
+	Com1TxCnt=0;
+	Com1TxThisPt=0;
+
+	
+    for(i=0;(i < Com1TxBuffer[3]);i++){
+		Com1TxBuffer[4+i]=RcvBuf[i + RCV_DATA];
+    }
+
+
+	bCan1RxAll=0;
+
+	Com1TxCnt = (4 + Com1TxBuffer[3]);
+
+    Crc=0xffff;
+    for(i=0;i<Com1TxBuffer[3]+4;i++){
+        Crc_Calulate((unsigned int)Com1TxBuffer[i]);
+    }
+    Com1TxBuffer[i]=(unsigned char)(Crc & 0x00ff);
+    Com1TxBuffer[i+1]=(unsigned char)((Crc >> 8) & 0x00ff);
+
+	Com1TxCnt = (Com1TxCnt + 2);
+
+	Com1TxStart();
+
+}
+*/
 
 
 unsigned int   __attribute__((section(".usercode"))) Can1ReceiveData(void)
@@ -106,7 +204,6 @@ unsigned int   __attribute__((section(".usercode"))) Can1ReceiveData(void)
 		if((Can1RxEid & HOST_LAST_DATA)){
 			bCan1RxAll=1;
 			hostnm = hostnm + 32; 
-
 		}
 		else{
 			j=(unsigned char)(Can1RxEid & 0x0f);	
@@ -151,13 +248,14 @@ unsigned int   __attribute__((section(".usercode"))) Can1ReceiveData(void)
 			Can1RxCnt=(Can1RxCnt + Can1RxDlc);
 			Can1RxThisPt=Can1RxCnt;
 		}
-
+#ifdef	I_AM_CALL_HOST
 		if(bCan1RxAll & bWrCmd){
 				bWrCmd = 0;
 				buf_pt=HogiSelect();
 				if(buf_pt >= 0xff)	return(0);			
 				BufTxCom1(Com1RxBuffer[0],buf_pt);
 		}	
+#endif
 	}
 	else{
         bCan1RxAll=0;
