@@ -14,8 +14,8 @@
 #define         CAN2_MAX_RX_BUF     100
 
 
-#define     CRT_COMPANY				'A'
-#define     CRT_TX_DATA_TO_PC   	88   //40   40= baudrate=19200   88= baudrate=38400
+#define     CRT_COMPANY				'D'
+#define     CRT_TX_DATA_TO_PC   	40   //40   40= baudrate=19200   88= baudrate=38400
 
 
 #define		HOST_LIVE_TIME     10		//10 sec

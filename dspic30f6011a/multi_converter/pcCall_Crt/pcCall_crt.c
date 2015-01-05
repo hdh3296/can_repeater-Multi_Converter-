@@ -126,11 +126,11 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 
  
 
-//    Com1Init(BAUD_RATE_19200);
-//    Com2Init(BAUD_RATE_19200);
+    Com1Init(BAUD_RATE_19200);
+    Com2Init(BAUD_RATE_19200);
 
-    Com1Init(BAUD_RATE_38400);
-    Com2Init(BAUD_RATE_38400);
+//    Com1Init(BAUD_RATE_38400);
+//    Com2Init(BAUD_RATE_38400);
 
 	Filter_Mask_Set();
 
