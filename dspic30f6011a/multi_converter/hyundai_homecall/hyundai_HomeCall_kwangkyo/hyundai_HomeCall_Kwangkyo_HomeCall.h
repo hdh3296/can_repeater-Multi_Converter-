@@ -4,8 +4,8 @@
 #define    	I_AM_LISTENING_MODE	1
 
 #define     CRT_COMPANY			'D'
-#define     MAX_ELEV            14				// 수정 4001 동 36,4501동 14, 2101동 6,2201동 8   
-#define     BASE_DONG			4501			// 수정
+#define     MAX_ELEV            36				// 수정 4001 동 36,4501동 14, 2101동 6,2201동 8   
+#define     BASE_DONG			4001			// 수정
 
 
 

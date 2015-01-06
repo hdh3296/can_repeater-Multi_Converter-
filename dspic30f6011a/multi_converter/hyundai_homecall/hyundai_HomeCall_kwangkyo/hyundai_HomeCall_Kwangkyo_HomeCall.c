@@ -1742,21 +1742,21 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 		ReqHost[i].Ho_Host[4]=BASE_FLOOR_B2;       // BASE_FLOOR= B2    //0=B7 1=B6 2=B5 3=B4 4=B3 5=B2 6=B1 7=01
 	}
 
-/*
+
 	if(BASE_DONG == 4001){
 		//4001동
 		ReqHost[2].Ho_Host[4]=BASE_FLOOR_B1;        // BASE_FLOOR = B1 (4002동  12 line)     
 		ReqHost[3].Ho_Host[4]=BASE_FLOOR_B1;        // BASE_FLOOR = B1 (4002동  34 line)     
 	}
-*/
 
+/*
 	if(BASE_DONG == 4501){
 		//4501동
 		for(i=6;i<MAX_ELEV;i++){						// 7호기 부터 B1(4504,4505,4506,4507동)
 			ReqHost[i].Ho_Host[4]=BASE_FLOOR_B1;        // BASE_FLOOR = B1      
 		}
 	}
-
+*/
 
 
 
