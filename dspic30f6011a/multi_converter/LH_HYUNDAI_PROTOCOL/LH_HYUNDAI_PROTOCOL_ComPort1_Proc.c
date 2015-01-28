@@ -479,11 +479,10 @@ unsigned int __attribute__((section(".usercode")))	NonStopCall(unsigned char Hog
 unsigned int __attribute__((section(".usercode")))	CarExtCall(unsigned char Hogi)
 {  
 	unsigned char tmpfloor;
-	tmpfloor=(Com1RxBuffer[6]-1);
+	tmpfloor=(Com1RxBuffer[6]);
 	switch(Com1RxBuffer[5]){
 		case	3:  // car call
-		case	4:  // up call
-		case	5:  // down call
+			tmpfloor=(Com1RxBuffer[6]-1);
 			CommonPcCmd_Buf[0]=0x24;
 			CommonPcCmd_Buf[1]=0x04;
 			CommonPcCmd_Buf[2]=0x86;
@@ -492,7 +491,7 @@ unsigned int __attribute__((section(".usercode")))	CarExtCall(unsigned char Hogi
 			CommonPcCmd_Buf[5]=0x00;
 			CommonPcCmd_Buf[19]=Hogi;
 			break;
-/*
+
 		case	4: // up call
 			CommonPcCmd_Buf[0]=0x24;
 			CommonPcCmd_Buf[1]=0x04;
@@ -505,13 +504,13 @@ unsigned int __attribute__((section(".usercode")))	CarExtCall(unsigned char Hogi
 		case	5: // down call
 			CommonPcCmd_Buf[0]=0x24;
 			CommonPcCmd_Buf[1]=0x04;
-			CommonPcCmd_Buf[2]=0x86;
+			CommonPcCmd_Buf[2]=0x87;
 			CommonPcCmd_Buf[3]=0x00;
 			CommonPcCmd_Buf[4]=(tmpfloor | 0x40);
 			CommonPcCmd_Buf[5]=0x00;
 			CommonPcCmd_Buf[19]=Hogi;
 			break;
-*/
+
 		default:
 			break;
 

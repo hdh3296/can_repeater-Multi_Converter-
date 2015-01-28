@@ -158,6 +158,12 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 	for(i=0;i<MAX_ELEV;i++)	HostElevLive[i]=100;
 
 
+///////////////////////////////////////////////
+/// CRT_COMPANY
+/// host id 		= tmpGroupadr
+/// Hyundai host id	= Ho_Host[0]
+
+
 	tmpCompany=CRT_COMPANY;
 	tmpGroupadr=0;
 	tmpLocaladr=0;    
@@ -165,13 +171,13 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 		
 	ReqHost[0].HostSid=Can1TxSid;
 	ReqHost[0].HostEid=Can1TxEid;
-	ReqHost[0].HostGroup=0;
-	ReqHost[0].Ho_Host[0]=6;
+	ReqHost[0].HostGroup=tmpGroupadr;
+	ReqHost[0].Ho_Host[0]=3;       // my address hyundai  call 6
 	ReqHost[0].Ho_Host[1]=0xff;
 	ReqHost[0].Ho_Host[3]=0xff;
 	ReqHost[0].Ho_Host[4]=0xff;
 	ReqHost[0].HostB=0;
-
+//////////////////////////////////////////////////
 
 	tmpCompany=CRT_COMPANY;
 	tmpGroupadr=1;
@@ -180,14 +186,15 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 
 	ReqHost[1].HostSid=Can1TxSid;
 	ReqHost[1].HostEid=Can1TxEid;
-	ReqHost[1].HostGroup=1;
-	ReqHost[1].Ho_Host[0]=7;
+	ReqHost[1].HostGroup=tmpGroupadr;
+	ReqHost[1].Ho_Host[0]=4;		// my address hyundai  call 7
 	ReqHost[1].Ho_Host[1]=0xff;
 	ReqHost[1].Ho_Host[3]=0xff;
 	ReqHost[1].Ho_Host[4]=0xff;
 	ReqHost[0].HostB=1;
 
 
+//////////////////////////////////////////////////
 
 	tmpCompany=CRT_COMPANY;
 	tmpGroupadr=2;
@@ -196,13 +203,14 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 
 	ReqHost[2].HostSid=Can1TxSid;
 	ReqHost[2].HostEid=Can1TxEid;
-	ReqHost[2].HostGroup=2;
-	ReqHost[2].Ho_Host[0]=8;
+	ReqHost[2].HostGroup=tmpGroupadr;
+	ReqHost[2].Ho_Host[0]=5;		// my address hyundai  call 8
 	ReqHost[2].Ho_Host[1]=0xff;
 	ReqHost[2].Ho_Host[3]=0xff;
 	ReqHost[2].Ho_Host[4]=0xff;
 	ReqHost[0].HostB=2;
 
+//////////////////////////////////////////////////
 
 	tmpCompany=CRT_COMPANY;
 	tmpGroupadr=3;
@@ -211,12 +219,15 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 
 	ReqHost[3].HostSid=Can1TxSid;
 	ReqHost[3].HostEid=Can1TxEid;
-	ReqHost[3].HostGroup=3;
-	ReqHost[3].Ho_Host[0]=13;
+	ReqHost[3].HostGroup=tmpGroupadr;
+	ReqHost[3].Ho_Host[0]=6;		// my address hyundai  call 13
 	ReqHost[3].Ho_Host[1]=0xff;
 	ReqHost[3].Ho_Host[3]=0xff;
 	ReqHost[3].Ho_Host[4]=0xff;
 	ReqHost[0].HostB=3;
+
+
+
 
 
 /*
