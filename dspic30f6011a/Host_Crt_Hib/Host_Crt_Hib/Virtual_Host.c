@@ -82,7 +82,9 @@ long_field  UserPgmConfig[USER_FLASH_BYTE]    	__attribute__((aligned(USER_FLASH
 const unsigned char StatusMessage[50][16]={0};
 
 
-
+unsigned    char    xParkingCmd[10]={0,0,0};
+unsigned    char    xCarCallCmd[10]={0,0,0};
+unsigned    char    xFlrCmd[10]={0,0,0};
 
 
 
@@ -156,8 +158,85 @@ void  __attribute__((section(".usercode"))) PLC_Call(void)
 }
 
 
+
+unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
+{
+	unsigned char i;
+
+	if(xParkingCmd[7] == '1'){
+		if(Com2RxBuffer[36]=='1'){
+			xParkingCmd[0]=0;
+		}					
+	}
+	else if(xParkingCmd[7] == '0'){
+		if(Com2RxBuffer[36]=='0'){
+			xParkingCmd[0]=0;
+		}					
+	}
+	else{
+		xParkingCmd[0]=0;
+	}
+
+
+
+
+	if(xParkingCmd[0] > 0){  //parking
+		Com2SerialTime=0;
+ 		Com2TxThisPt=0;
+		Com2TxCnt=8;
+
+		Com2RxBuffer[0]=xParkingCmd[1];
+		Com2RxBuffer[1]=xParkingCmd[2];
+		Com2RxBuffer[2]=xParkingCmd[3];
+		Com2RxBuffer[3]=xParkingCmd[4];
+		Com2RxBuffer[4]=xParkingCmd[5];
+		Com2RxBuffer[5]=xParkingCmd[6];
+		Com2RxBuffer[6]=xParkingCmd[7];
+		Com2RxBuffer[7]=xParkingCmd[8];
+		xParkingCmd[0]--;
+	}
+	else if(xCarCallCmd[0] > 0){   //car call
+		Com2SerialTime=0;
+ 		Com2TxThisPt=0;
+		Com2TxCnt=8;
+
+		Com2RxBuffer[0]=xCarCallCmd[1];
+		Com2RxBuffer[1]=xCarCallCmd[2];
+		Com2RxBuffer[2]=xCarCallCmd[3];
+		Com2RxBuffer[3]=xCarCallCmd[4];
+		Com2RxBuffer[4]=xCarCallCmd[5];
+		Com2RxBuffer[5]=xCarCallCmd[6];
+		Com2RxBuffer[6]=xCarCallCmd[7];
+		Com2RxBuffer[7]=xCarCallCmd[8];
+		xCarCallCmd[0]--;
+	}
+
+	else if(xFlrCmd[0] > 0){   // flr cmd
+		Com2SerialTime=0;
+ 		Com2TxThisPt=0;
+		Com2TxCnt=8;
+
+		Com2RxBuffer[0]=xFlrCmd[1];
+		Com2RxBuffer[1]=xFlrCmd[2];
+		Com2RxBuffer[2]=xFlrCmd[3];
+		Com2RxBuffer[3]=xFlrCmd[4];
+		Com2RxBuffer[4]=xFlrCmd[5];
+		Com2RxBuffer[5]=xFlrCmd[6];
+		Com2RxBuffer[6]=xFlrCmd[7];
+		Com2RxBuffer[7]=xFlrCmd[8];
+		xFlrCmd[0]--;
+	}
+
+	Com2TxStart();
+
+	return(0);
+}
+
+
 unsigned int   __attribute__((section(".usercode"))) PLCCmdSort(void)
 {
+	unsigned char i;
+
 	if(Can1RxBuf[2]==0x81){  //parking
 		Com2SerialTime=0;
  		Com2TxThisPt=0;
@@ -171,7 +250,13 @@ unsigned int   __attribute__((section(".usercode"))) PLCCmdSort(void)
 		Com2RxBuffer[5]='0';
 		Com2RxBuffer[6]='0';
 		Com2RxBuffer[7]=PLC_TAIL;
+
 		if(Can1RxBuf[4] == 0x01)	Com2RxBuffer[6]='1';
+
+		for(i=0;i<8;i++){
+			xParkingCmd[i+1]=Com2RxBuffer[i];
+		}
+		xParkingCmd[0]=10;
 	}
 	else if(Can1RxBuf[2]==0x86){   //car call
 		Com2SerialTime=0;
@@ -237,6 +322,11 @@ unsigned int   __attribute__((section(".usercode"))) PLCCmdSort(void)
 				Com2RxBuffer[3]='8';
 				break;		
 		}
+
+		for(i=0;i<8;i++){
+			xCarCallCmd[i+1]=Com2RxBuffer[i];
+		}
+		xCarCallCmd[0]=10;
 	}
 
 	else if(Can1RxBuf[2]==0x02){   // flr cmd
@@ -286,8 +376,12 @@ unsigned int   __attribute__((section(".usercode"))) PLCCmdSort(void)
 		else						Com2RxBuffer[4]=(Com2RxBuffer[4] + '0');		
 		if(Com2RxBuffer[3] >= 0x0a)	Com2RxBuffer[3]=(Com2RxBuffer[3] + '7');		
 		else						Com2RxBuffer[3]=(Com2RxBuffer[3] + '0');		
-	}
 
+		for(i=0;i<8;i++){
+			xFlrCmd[i+1]=Com2RxBuffer[i];
+		}
+		xFlrCmd[0]=10;
+	}
 
 	Com2TxStart();
 
@@ -307,6 +401,9 @@ unsigned int   __attribute__((section(".usercode"))) PLCAck(unsigned char rdata)
 
 			YouAirconAckTimer[0]=0;
 			Com2RxBuffer[0]=0;
+
+			RepeatePLCCmdSort();
+
 	}
 	else if(Com2RxCnt >= 38){
 			Com2RxCnt=0;		
