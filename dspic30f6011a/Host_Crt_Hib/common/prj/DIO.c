@@ -851,6 +851,57 @@ void    DirectPortIn(void)
 #define  sREADY               65
 
 
+/*  신한 485 데이터 프로토콜 리스트 정보 */
+#define mySTART				0	// 'S'
+#define	mySTX				1	// 0x02
+// -미사용-
+#define NotUse2			2
+// 층 정보
+#define myFLOOR_DSP1	3	
+#define myFLOOR_DSP2	4
+// -미사용-
+#define myNotUse5		5
+#define myNotUse6		6
+#define myNotUse7		7
+#define myNotUse8		8
+#define myNotUse9		9
+#define myNotUse10		10
+// 속도 
+#define mySPEED1		11
+#define mySPEED2		12
+#define mySPEED3		13
+// 업, 다운 정보, 0은 방향 없음 
+#define myUPDN			14
+// 도어 Open/CLose
+#define myDOOR			15
+// 자동, 수동, 화재 등의 각종 정보 
+#define mySTATE			16
+// 알람코드 
+#define myALARM1		17
+#define myALARM2		18
+// 카 키 상태 
+#define myCAR_KEY1		19	
+#define myCAR_KEY2		20	
+#define myCAR_KEY3		21	
+#define myCAR_KEY4		22	
+// Skip(Service)
+#define mySERVICE1		23
+#define mySERVICE2		24
+#define mySERVICE3		25
+#define mySERVICE4		26
+// -미사용-
+#define	myNotUse27		27
+#define	myNotUse28		28
+#define	myNotUse29		29
+#define	myNotUse30		30
+#define	myNotUse31		31
+#define	myNotUse32		32
+#define	myNotUse33		33
+#define	myNotUse34		34
+#define	myNotUse35		35
+// 파킹 
+#define myPARKING		36
+
 unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 {
     unsigned int bitflr;
@@ -860,11 +911,11 @@ unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 
 	x=0;
 
-	if(Com2RxBuffer[3] >= 'A')	dsp1=(Com2RxBuffer[3] - '7');
+	if(Com2RxBuffer[myFLOOR_DSP1] >= 'A')	dsp1=(Com2RxBuffer[3] - '7');
 	else						dsp1=(Com2RxBuffer[3] - '0');
 	dsp1=(dsp1 << 4);
 
-	if(Com2RxBuffer[4] >= 'A')	dsp2=(Com2RxBuffer[4] - '7');
+	if(Com2RxBuffer[myFLOOR_DSP2] >= 'A')	dsp2=(Com2RxBuffer[4] - '7');
 	else						dsp2=(Com2RxBuffer[4] - '0');
 	 
 	dsp1=(dsp1 | dsp2);
@@ -878,9 +929,9 @@ unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 	sRamDArry[x][DSP2]=DftFlrName[dsp1 + 1];
 //567890
 
-	mpm= (Com2RxBuffer[11] - '0') * 100;
-	mpm=((Com2RxBuffer[12] - '0') * 10) + mpm;
-	mpm= (Com2RxBuffer[13] - '0') + mpm;
+	mpm= (Com2RxBuffer[mySPEED1] - '0') * 100;
+	mpm=((Com2RxBuffer[mySPEED2] - '0') * 10) + mpm;
+	mpm= (Com2RxBuffer[mySPEED3] - '0') + mpm;
 	mpm= (mpm * 10);
 
 
@@ -891,7 +942,7 @@ unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 
 //	sRamDArry[x][S2_STATE]=(sRamDArry[x][S2_STATE] | S2_CAR_MOVE);
 
-	if( (Com2RxBuffer[14]== '3') ||  (Com2RxBuffer[14]== '4')){
+	if( (Com2RxBuffer[myUPDN]== '3') ||  (Com2RxBuffer[myUPDN]== '4')){
 		sRamDArry[x][S2_STATE]=(sRamDArry[x][S2_STATE] | S2_CAR_MOVE);
 	}
 	else{
@@ -906,8 +957,8 @@ unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 	}
 */
 
-	if(Com2RxBuffer[14]== '1')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_UP);		
-	if(Com2RxBuffer[14]== '2')		sRamDArry[x][S2_STATE]=(sRamDArry[x][S2_STATE] | S2_DN);		
+	if(Com2RxBuffer[myUPDN]== '1')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_UP);		
+	if(Com2RxBuffer[myUPDN]== '2')		sRamDArry[x][S2_STATE]=(sRamDArry[x][S2_STATE] | S2_DN);		
 //	if(Com2RxBuffer[14]== '3')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_UP);		
 //	if(Com2RxBuffer[14]== '4')		sRamDArry[x][S2_STATE]=(sRamDArry[x][S2_STATE] | S2_DN);		
 
@@ -915,9 +966,9 @@ unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 
 	sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] & ~S1_OPEN);
 	sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] & ~S1_CLOSE);
-	if(Com2RxBuffer[15]== '0')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_OPEN);		
-	if(Com2RxBuffer[15]== '2')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_OPEN);		
-	if(Com2RxBuffer[15]== '1')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_CLOSE);		
+	if(Com2RxBuffer[myDOOR]== '0')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_OPEN);		
+	if(Com2RxBuffer[myDOOR]== '2')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_OPEN);		
+	if(Com2RxBuffer[myDOOR]== '1')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_CLOSE);		
 
 
 	sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] & ~S1_AUTO);
@@ -927,23 +978,33 @@ unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 	sRamDArry[x][S2_STATE]=(sRamDArry[x][S2_STATE] & ~S2_FIRE);
 	sRamDArry[x][S3_STATE]=(sRamDArry[x][S3_STATE] & ~S3_VIP);
 
-	if(Com2RxBuffer[16]== '9')			sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_EMG);
-	else if(Com2RxBuffer[16]== '5'){
-		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_BAT);
+	if(Com2RxBuffer[mySTATE]== '9')			
+		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_EMG);
+	else if(Com2RxBuffer[mySTATE]== '5'){
+		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_BAT); //  
 		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);
 	}
-	else if(Com2RxBuffer[16]== '0')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);		
-	else if(Com2RxBuffer[16]== '1')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);		
-	else if(Com2RxBuffer[16]== '2')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);		
-	else if(Com2RxBuffer[16]== '3')		sRamDArry[x][S3_STATE]=(sRamDArry[x][S3_STATE] | S3_VIP);		
-	else if(Com2RxBuffer[16]== '4')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] & ~S1_AUTO);		
-	else if(Com2RxBuffer[16]== '6')		sRamDArry[x][S2_STATE]=(sRamDArry[x][S2_STATE] | S2_FIRE);
-	else if(Com2RxBuffer[16]== '7')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);
-	else if(Com2RxBuffer[16]== '8')		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);
+	else if(Com2RxBuffer[mySTATE]== '0')		
+		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);		
+	else if(Com2RxBuffer[mySTATE]== '1')		
+		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);		
+	else if(Com2RxBuffer[mySTATE]== '2')		
+		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);		
+	else if(Com2RxBuffer[mySTATE]== '3')		
+		sRamDArry[x][S3_STATE]=(sRamDArry[x][S3_STATE] | S3_VIP); // 전용운전 		
+	else if(Com2RxBuffer[mySTATE]== '4')		
+		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] & ~S1_AUTO);	// 수동, 점검중 	
+	else if(Com2RxBuffer[mySTATE]== '6')		
+		sRamDArry[x][S2_STATE]=(sRamDArry[x][S2_STATE] | S2_FIRE); // 화재 
+	else if(Com2RxBuffer[mySTATE]== '7')		
+		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);
+	else if(Com2RxBuffer[mySTATE]== '8')		
+		sRamDArry[x][S1_STATE]=(sRamDArry[x][S1_STATE] | S1_AUTO);
 
 
 	sRamDArry[x][S3_STATE]=(sRamDArry[x][S3_STATE] & ~S3_PARKING);
-	if(Com2RxBuffer[36]=='1')	sRamDArry[x][S3_STATE]=(sRamDArry[x][S3_STATE] | S3_PARKING);;
+	if(Com2RxBuffer[myPARKING]=='1')	
+		sRamDArry[x][S3_STATE]=(sRamDArry[x][S3_STATE] | S3_PARKING);;
 
 
 
@@ -995,42 +1056,42 @@ unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 //17,18
 	
 
-	if(Com2RxBuffer[22] >= 'A')		dsp1= Com2RxBuffer[22] - '7';
-	else							dsp1= Com2RxBuffer[22] - '0';
+	if(Com2RxBuffer[myCAR_KEY4] >= 'A')		dsp1= Com2RxBuffer[myCAR_KEY4] - '7';
+	else							dsp1= Com2RxBuffer[myCAR_KEY4] - '0';
 	sRamDArry[x][mCarKey1]=dsp1;
 
-	if(Com2RxBuffer[21] >= 'A')		dsp1= Com2RxBuffer[21] - '7';
-	else							dsp1= Com2RxBuffer[21] - '0';
+	if(Com2RxBuffer[myCAR_KEY3] >= 'A')		dsp1= Com2RxBuffer[myCAR_KEY3] - '7';
+	else							dsp1= Com2RxBuffer[myCAR_KEY3] - '0';
 	dsp1=(dsp1 << 4);
 	sRamDArry[x][mCarKey1]=(sRamDArry[x][mCarKey1] | dsp1);
 
 
-	if(Com2RxBuffer[20] >= 'A')		dsp1= Com2RxBuffer[20] - '7';
-	else							dsp1= Com2RxBuffer[20] - '0';
+	if(Com2RxBuffer[myCAR_KEY2] >= 'A')		dsp1= Com2RxBuffer[myCAR_KEY2] - '7';
+	else							dsp1= Com2RxBuffer[myCAR_KEY2] - '0';
 	sRamDArry[x][mCarKey9]=dsp1;
 
-	if(Com2RxBuffer[19] >= 'A')		dsp1= Com2RxBuffer[19] - '7';
-	else							dsp1= Com2RxBuffer[19] - '0';
+	if(Com2RxBuffer[myCAR_KEY1] >= 'A')		dsp1= Com2RxBuffer[myCAR_KEY1] - '7';
+	else							dsp1= Com2RxBuffer[myCAR_KEY1] - '0';
 	dsp1=(dsp1 << 4);
 	sRamDArry[x][mCarKey9]=(sRamDArry[x][mCarKey9] | dsp1);
 
 
 
-	if(Com2RxBuffer[26] >= 'A')		dsp1= Com2RxBuffer[26] - '7';
-	else							dsp1= Com2RxBuffer[26] - '0';
+	if(Com2RxBuffer[mySERVICE4] >= 'A')		dsp1= Com2RxBuffer[mySERVICE4] - '7';
+	else							dsp1= Com2RxBuffer[mySERVICE4] - '0';
 	sRamDArry[x][FLR_ON_OFF0]=dsp1;
 
-	if(Com2RxBuffer[25] >= 'A')		dsp1= Com2RxBuffer[25] - '7';
-	else							dsp1= Com2RxBuffer[25] - '0';
+	if(Com2RxBuffer[mySERVICE3] >= 'A')		dsp1= Com2RxBuffer[mySERVICE3] - '7';
+	else							dsp1= Com2RxBuffer[mySERVICE3] - '0';
 	dsp1=(dsp1 << 4);
 	sRamDArry[x][FLR_ON_OFF0]=(sRamDArry[x][FLR_ON_OFF0] | dsp1);
 
-	if(Com2RxBuffer[24] >= 'A')		dsp1= Com2RxBuffer[24] - '7';
-	else							dsp1= Com2RxBuffer[24] - '0';
+	if(Com2RxBuffer[mySERVICE2] >= 'A')		dsp1= Com2RxBuffer[mySERVICE2] - '7';
+	else							dsp1= Com2RxBuffer[mySERVICE2] - '0';
 	sRamDArry[x][FLR_ON_OFF1]=dsp1;
 
-	if(Com2RxBuffer[23] >= 'A')		dsp1= Com2RxBuffer[23] - '7';
-	else							dsp1= Com2RxBuffer[23] - '0';
+	if(Com2RxBuffer[mySERVICE1] >= 'A')		dsp1= Com2RxBuffer[mySERVICE1] - '7';
+	else							dsp1= Com2RxBuffer[mySERVICE1] - '0';
 	dsp1=(dsp1 << 4);
 	sRamDArry[x][FLR_ON_OFF1]=(sRamDArry[x][FLR_ON_OFF1] | dsp1);
 
@@ -1040,14 +1101,14 @@ unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 
 
 //error status 
-	dsp1=Com2RxBuffer[17];
-	dsp2=Com2RxBuffer[18];
-	if(Com2RxBuffer[17] >= 'A')	dsp1=(Com2RxBuffer[17] - '7');
-	else						dsp1=(Com2RxBuffer[17] - '0');
+	dsp1=Com2RxBuffer[myALARM1];
+	dsp2=Com2RxBuffer[myALARM2];
+	if(Com2RxBuffer[myALARM1] >= 'A')	dsp1=(Com2RxBuffer[myALARM1] - '7');
+	else						dsp1=(Com2RxBuffer[myALARM1] - '0');
 	dsp1=(dsp1 << 4);
 
-	if(Com2RxBuffer[18] >= 'A')	dsp2=(Com2RxBuffer[18] - '7');
-	else						dsp2=(Com2RxBuffer[18] - '0');
+	if(Com2RxBuffer[myALARM2] >= 'A')	dsp2=(Com2RxBuffer[myALARM2] - '7');
+	else						dsp2=(Com2RxBuffer[myALARM2] - '0');
 	 
 	dsp1=(dsp1 | dsp2);
 
