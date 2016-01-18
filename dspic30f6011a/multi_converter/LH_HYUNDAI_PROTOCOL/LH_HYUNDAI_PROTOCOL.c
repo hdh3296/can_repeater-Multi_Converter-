@@ -131,7 +131,7 @@ void    GetTxSidEid(unsigned char tmpCompany,unsigned char tmpGroup,unsigned cha
 }
 
 
-
+// ----> 현대 엘리베이터 ID 설정 <----//
 unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 {
 	unsigned int i;
