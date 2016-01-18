@@ -852,11 +852,12 @@ void    DirectPortIn(void)
 
 
 /*  신한 485 데이터 프로토콜 리스트 정보 */
-#define mySTART				0	// 'S'
-#define	mySTX				1	// 0x02
-// -미사용-
+// 'S' : 0x53
+#define mySTART			0	
+// 호기 번호 
+#define	mySTX			1	
 #define NotUse2			2
-// 층 정보
+// 층 위치 
 #define myFLOOR_DSP1	3	
 #define myFLOOR_DSP2	4
 // -미사용-

@@ -391,11 +391,11 @@ unsigned int   __attribute__((section(".usercode"))) PLCCmdSort(void)
 
 unsigned int   __attribute__((section(".usercode"))) PLCAck(unsigned char rdata)
 {
-	if(Com2RxBuffer[0] != 'S'){
+	if(Com2RxBuffer[0] != 'S'){ // S: 0x53
 		Com2RxCnt=1;		
 		Com2RxBuffer[0]=rdata;
 	}
-	else if( (rdata == 'E') && (Com2RxCnt >= 35)){
+	else if( (rdata == 'E') && (Com2RxCnt >= 35)){ // E: 0x45
 			Com2RxCnt=0;
 			PLCInData();
 
@@ -488,7 +488,7 @@ unsigned int  __attribute__((section(".usercode"))) ReadInitSetupData(void)
 		Set_Byte_Flash_Buf((unsigned int)(cF_Version_A))           	= VERSION;
 
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyProductIdValue_A)) = 'A';
-		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr1Value_A))     = 0;
+		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr1Value_A))     = 8;
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr2Value_A))     = 0xfd;
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr3Value_A))     = 0xfd;
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr4Value_A))     = 0xfd;
