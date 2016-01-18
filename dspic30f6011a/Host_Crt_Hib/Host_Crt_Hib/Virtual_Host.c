@@ -83,7 +83,7 @@ const unsigned char StatusMessage[50][16]={0};
 
 
 unsigned    char    xParkingCmd[10]={0,0,0};
-unsigned    char    xCarCallCmd[10]={0,0,0};
+unsigned    char    xCarCallCmd[16][10]={0,};
 unsigned    char    xFlrCmd[10]={0,0,0};
 
 
@@ -162,7 +162,10 @@ void  __attribute__((section(".usercode"))) PLC_Call(void)
 unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 {
 	unsigned char i;
+	static char bCarCall = 0;
+	static char CarCallFlr = 0;
 
+// ÆÄÅ· ½Ã
 	if(xParkingCmd[7] == '1'){
 		if(Com2RxBuffer[36]=='1'){
 			xParkingCmd[0]=0;
@@ -178,7 +181,15 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 	}
 
 
-
+	bCarCall = 0;
+	for(i=0; i<16; i++)
+	{
+		if (xCarCallCmd[i][0] != 0)
+		{
+			bCarCall = 1;
+			break;
+		}
+	}
 
 	if(xParkingCmd[0] > 0){  //parking
 		Com2SerialTime=0;
@@ -195,22 +206,391 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 		Com2RxBuffer[7]=xParkingCmd[8];
 		xParkingCmd[0]--;
 	}
-	else if(xCarCallCmd[0] > 0){   //car call
-		Com2SerialTime=0;
- 		Com2TxThisPt=0;
-		Com2TxCnt=8;
+	else if (bCarCall)
+	{
+		switch (CarCallFlr)
+		{
+		case 0:
 
-		Com2RxBuffer[0]=xCarCallCmd[1];
-		Com2RxBuffer[1]=xCarCallCmd[2];
-		Com2RxBuffer[2]=xCarCallCmd[3];
-		Com2RxBuffer[3]=xCarCallCmd[4];
-		Com2RxBuffer[4]=xCarCallCmd[5];
-		Com2RxBuffer[5]=xCarCallCmd[6];
-		Com2RxBuffer[6]=xCarCallCmd[7];
-		Com2RxBuffer[7]=xCarCallCmd[8];
-		xCarCallCmd[0]--;
+			CarCallFlr = 1;
+
+			if(Com2RxBuffer[22]=='1') xCarCallCmd[0][0] = 0;
+			
+			if(xCarCallCmd[0][0] > 0){  
+				
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[0][1];
+				Com2RxBuffer[1]=xCarCallCmd[0][2];
+				Com2RxBuffer[2]=xCarCallCmd[0][3];
+				Com2RxBuffer[3]=xCarCallCmd[0][4];
+				Com2RxBuffer[4]=xCarCallCmd[0][5];
+				Com2RxBuffer[5]=xCarCallCmd[0][6];
+				Com2RxBuffer[6]=xCarCallCmd[0][7];
+				Com2RxBuffer[7]=xCarCallCmd[0][8];
+				xCarCallCmd[0][0]--;
+
+				break;
+			}			
+			
+		case 1:
+
+			CarCallFlr = 2;	
+		
+			if(Com2RxBuffer[22]=='2') xCarCallCmd[1][0] = 0;
+			
+			if(xCarCallCmd[1][0] > 0){   //car call
+				CarCallFlr = 2;	
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[1][1];
+				Com2RxBuffer[1]=xCarCallCmd[1][2];
+				Com2RxBuffer[2]=xCarCallCmd[1][3];
+				Com2RxBuffer[3]=xCarCallCmd[1][4];
+				Com2RxBuffer[4]=xCarCallCmd[1][5];
+				Com2RxBuffer[5]=xCarCallCmd[1][6];
+				Com2RxBuffer[6]=xCarCallCmd[1][7];
+				Com2RxBuffer[7]=xCarCallCmd[1][8];
+				xCarCallCmd[1][0]--;
+
+				break;
+			}	
+
+		case 2:
+
+			CarCallFlr = 3;	
+
+			if(Com2RxBuffer[22]=='4') xCarCallCmd[2][0] = 0;
+			
+			if(xCarCallCmd[2][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[2][1];
+				Com2RxBuffer[1]=xCarCallCmd[2][2];
+				Com2RxBuffer[2]=xCarCallCmd[2][3];
+				Com2RxBuffer[3]=xCarCallCmd[2][4];
+				Com2RxBuffer[4]=xCarCallCmd[2][5];
+				Com2RxBuffer[5]=xCarCallCmd[2][6];
+				Com2RxBuffer[6]=xCarCallCmd[2][7];
+				Com2RxBuffer[7]=xCarCallCmd[2][8];
+				xCarCallCmd[2][0]--;
+
+				break;
+			}
+		case 3:
+
+			CarCallFlr = 4;	
+
+			if(Com2RxBuffer[22]=='8') xCarCallCmd[3][0] = 0;
+			
+			if(xCarCallCmd[3][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[3][1];
+				Com2RxBuffer[1]=xCarCallCmd[3][2];
+				Com2RxBuffer[2]=xCarCallCmd[3][3];
+				Com2RxBuffer[3]=xCarCallCmd[3][4];
+				Com2RxBuffer[4]=xCarCallCmd[3][5];
+				Com2RxBuffer[5]=xCarCallCmd[3][6];
+				Com2RxBuffer[6]=xCarCallCmd[3][7];
+				Com2RxBuffer[7]=xCarCallCmd[3][8];
+				xCarCallCmd[3][0]--;
+
+				break;
+			}
+		case 4:
+
+			CarCallFlr = 5;	
+
+			if(Com2RxBuffer[21]=='1') xCarCallCmd[4][0] = 0;
+			
+			if(xCarCallCmd[4][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[4][1];
+				Com2RxBuffer[1]=xCarCallCmd[4][2];
+				Com2RxBuffer[2]=xCarCallCmd[4][3];
+				Com2RxBuffer[3]=xCarCallCmd[4][4];
+				Com2RxBuffer[4]=xCarCallCmd[4][5];
+				Com2RxBuffer[5]=xCarCallCmd[4][6];
+				Com2RxBuffer[6]=xCarCallCmd[4][7];
+				Com2RxBuffer[7]=xCarCallCmd[4][8];
+				xCarCallCmd[4][0]--;
+
+				break;
+			}
+		case 5:
+
+			CarCallFlr = 6;	
+
+			if(Com2RxBuffer[21]=='2') xCarCallCmd[5][0] = 0;
+			
+			if(xCarCallCmd[5][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[5][1];
+				Com2RxBuffer[1]=xCarCallCmd[5][2];
+				Com2RxBuffer[2]=xCarCallCmd[5][3];
+				Com2RxBuffer[3]=xCarCallCmd[5][4];
+				Com2RxBuffer[4]=xCarCallCmd[5][5];
+				Com2RxBuffer[5]=xCarCallCmd[5][6];
+				Com2RxBuffer[6]=xCarCallCmd[5][7];
+				Com2RxBuffer[7]=xCarCallCmd[5][8];
+				xCarCallCmd[5][0]--;
+
+				break;
+			}
+		case 6:
+
+			CarCallFlr = 7;	
+
+			if(Com2RxBuffer[21]=='4') xCarCallCmd[6][0] = 0;
+			
+			if(xCarCallCmd[6][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[6][1];
+				Com2RxBuffer[1]=xCarCallCmd[6][2];
+				Com2RxBuffer[2]=xCarCallCmd[6][3];
+				Com2RxBuffer[3]=xCarCallCmd[6][4];
+				Com2RxBuffer[4]=xCarCallCmd[6][5];
+				Com2RxBuffer[5]=xCarCallCmd[6][6];
+				Com2RxBuffer[6]=xCarCallCmd[6][7];
+				Com2RxBuffer[7]=xCarCallCmd[6][8];
+				xCarCallCmd[6][0]--;
+
+				break;
+			}
+		case 7:
+
+			CarCallFlr = 8;	
+
+			if(Com2RxBuffer[21]=='8') xCarCallCmd[7][0] = 0;
+			
+			if(xCarCallCmd[7][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[7][1];
+				Com2RxBuffer[1]=xCarCallCmd[7][2];
+				Com2RxBuffer[2]=xCarCallCmd[7][3];
+				Com2RxBuffer[3]=xCarCallCmd[7][4];
+				Com2RxBuffer[4]=xCarCallCmd[7][5];
+				Com2RxBuffer[5]=xCarCallCmd[7][6];
+				Com2RxBuffer[6]=xCarCallCmd[7][7];
+				Com2RxBuffer[7]=xCarCallCmd[7][8];
+				xCarCallCmd[7][0]--;
+
+				break;
+			}
+		case 8:
+
+			CarCallFlr = 9;	
+
+			if(Com2RxBuffer[20]=='1') xCarCallCmd[8][0] = 0;
+			
+			if(xCarCallCmd[8][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[8][1];
+				Com2RxBuffer[1]=xCarCallCmd[8][2];
+				Com2RxBuffer[2]=xCarCallCmd[8][3];
+				Com2RxBuffer[3]=xCarCallCmd[8][4];
+				Com2RxBuffer[4]=xCarCallCmd[8][5];
+				Com2RxBuffer[5]=xCarCallCmd[8][6];
+				Com2RxBuffer[6]=xCarCallCmd[8][7];
+				Com2RxBuffer[7]=xCarCallCmd[8][8];
+				xCarCallCmd[8][0]--;
+
+				break;
+			}
+		case 9:
+
+			CarCallFlr = 10;	
+
+			if(Com2RxBuffer[20]=='2') xCarCallCmd[9][0] = 0;
+			
+			if(xCarCallCmd[9][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[9][1];
+				Com2RxBuffer[1]=xCarCallCmd[9][2];
+				Com2RxBuffer[2]=xCarCallCmd[9][3];
+				Com2RxBuffer[3]=xCarCallCmd[9][4];
+				Com2RxBuffer[4]=xCarCallCmd[9][5];
+				Com2RxBuffer[5]=xCarCallCmd[9][6];
+				Com2RxBuffer[6]=xCarCallCmd[9][7];
+				Com2RxBuffer[7]=xCarCallCmd[9][8];
+				xCarCallCmd[9][0]--;
+
+				break;
+			}
+		case 10:
+
+			CarCallFlr = 11;	
+
+			if(Com2RxBuffer[20]=='4') xCarCallCmd[10][0] = 0;
+			
+			if(xCarCallCmd[10][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[10][1];
+				Com2RxBuffer[1]=xCarCallCmd[10][2];
+				Com2RxBuffer[2]=xCarCallCmd[10][3];
+				Com2RxBuffer[3]=xCarCallCmd[10][4];
+				Com2RxBuffer[4]=xCarCallCmd[10][5];
+				Com2RxBuffer[5]=xCarCallCmd[10][6];
+				Com2RxBuffer[6]=xCarCallCmd[10][7];
+				Com2RxBuffer[7]=xCarCallCmd[10][8];
+				xCarCallCmd[10][0]--;
+
+				break;
+			}
+		case 11:
+
+			CarCallFlr = 12;	
+
+			if(Com2RxBuffer[20]=='8') xCarCallCmd[11][0] = 0;
+			
+			if(xCarCallCmd[11][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[11][1];
+				Com2RxBuffer[1]=xCarCallCmd[11][2];
+				Com2RxBuffer[2]=xCarCallCmd[11][3];
+				Com2RxBuffer[3]=xCarCallCmd[11][4];
+				Com2RxBuffer[4]=xCarCallCmd[11][5];
+				Com2RxBuffer[5]=xCarCallCmd[11][6];
+				Com2RxBuffer[6]=xCarCallCmd[11][7];
+				Com2RxBuffer[7]=xCarCallCmd[11][8];
+				xCarCallCmd[11][0]--;
+
+				break;
+			}
+		case 12:
+
+			CarCallFlr = 13;	
+
+			if(Com2RxBuffer[19]=='1') xCarCallCmd[12][0] = 0;
+			
+			if(xCarCallCmd[12][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[12][1];
+				Com2RxBuffer[1]=xCarCallCmd[12][2];
+				Com2RxBuffer[2]=xCarCallCmd[12][3];
+				Com2RxBuffer[3]=xCarCallCmd[12][4];
+				Com2RxBuffer[4]=xCarCallCmd[12][5];
+				Com2RxBuffer[5]=xCarCallCmd[12][6];
+				Com2RxBuffer[6]=xCarCallCmd[12][7];
+				Com2RxBuffer[7]=xCarCallCmd[12][8];
+				xCarCallCmd[12][0]--;
+
+				break;
+			}
+		case 13:
+
+			CarCallFlr = 14;	
+
+			if(Com2RxBuffer[19]=='2') xCarCallCmd[13][0] = 0;
+			
+			if(xCarCallCmd[13][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[13][1];
+				Com2RxBuffer[1]=xCarCallCmd[13][2];
+				Com2RxBuffer[2]=xCarCallCmd[13][3];
+				Com2RxBuffer[3]=xCarCallCmd[13][4];
+				Com2RxBuffer[4]=xCarCallCmd[13][5];
+				Com2RxBuffer[5]=xCarCallCmd[13][6];
+				Com2RxBuffer[6]=xCarCallCmd[13][7];
+				Com2RxBuffer[7]=xCarCallCmd[13][8];
+				xCarCallCmd[13][0]--;
+
+				break;
+			}
+		case 14:
+
+			CarCallFlr = 15;	
+
+			if(Com2RxBuffer[19]=='4') xCarCallCmd[14][0] = 0;
+			
+			if(xCarCallCmd[14][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[14][1];
+				Com2RxBuffer[1]=xCarCallCmd[14][2];
+				Com2RxBuffer[2]=xCarCallCmd[14][3];
+				Com2RxBuffer[3]=xCarCallCmd[14][4];
+				Com2RxBuffer[4]=xCarCallCmd[14][5];
+				Com2RxBuffer[5]=xCarCallCmd[14][6];
+				Com2RxBuffer[6]=xCarCallCmd[14][7];
+				Com2RxBuffer[7]=xCarCallCmd[14][8];
+				xCarCallCmd[14][0]--;
+
+				break;
+			}
+		case 15:
+
+			CarCallFlr = 0;	
+
+			if(Com2RxBuffer[19]=='8') xCarCallCmd[15][0] = 0;
+			
+			if(xCarCallCmd[15][0] > 0){   //car call
+				Com2SerialTime=0;
+		 		Com2TxThisPt=0;
+				Com2TxCnt=8;
+
+				Com2RxBuffer[0]=xCarCallCmd[15][1];
+				Com2RxBuffer[1]=xCarCallCmd[15][2];
+				Com2RxBuffer[2]=xCarCallCmd[15][3];
+				Com2RxBuffer[3]=xCarCallCmd[15][4];
+				Com2RxBuffer[4]=xCarCallCmd[15][5];
+				Com2RxBuffer[5]=xCarCallCmd[15][6];
+				Com2RxBuffer[6]=xCarCallCmd[15][7];
+				Com2RxBuffer[7]=xCarCallCmd[15][8];
+				xCarCallCmd[15][0]--;
+
+				break;
+			}
+		default:
+
+			CarCallFlr = 0;
+			
+			break;
+			
+		}
 	}
-
+	
 	else if(xFlrCmd[0] > 0){   // flr cmd
 		Com2SerialTime=0;
  		Com2TxThisPt=0;
@@ -275,58 +655,117 @@ unsigned int   __attribute__((section(".usercode"))) PLCCmdSort(void)
 		switch(Can1RxBuf[4]){
 			case	0:
 				Com2RxBuffer[6]='1';
+				for(i=0;i<8;i++){
+					xCarCallCmd[0][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[0][0]=10;
 				break;		
 			case	1:
 				Com2RxBuffer[6]='2';
+				for(i=0;i<8;i++){
+					xCarCallCmd[1][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[1][0]=10;
 				break;		
 			case	2:
 				Com2RxBuffer[6]='4';
+				for(i=0;i<8;i++){
+					xCarCallCmd[2][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[2][0]=10;
 				break;		
 			case	3:
 				Com2RxBuffer[6]='8';
+				for(i=0;i<8;i++){
+					xCarCallCmd[3][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[3][0]=10;
 				break;		
 			case	4:
 				Com2RxBuffer[5]='1';
+				for(i=0;i<8;i++){
+					xCarCallCmd[4][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[4][0]=10;
 				break;		
 			case	5:
 				Com2RxBuffer[5]='2';
+				for(i=0;i<8;i++){
+					xCarCallCmd[5][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[5][0]=10;
 				break;		
 			case	6:
 				Com2RxBuffer[5]='4';
+				for(i=0;i<8;i++){
+					xCarCallCmd[6][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[6][0]=10;
 				break;		
 			case	7:
 				Com2RxBuffer[5]='8';
+				for(i=0;i<8;i++){
+					xCarCallCmd[7][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[7][0]=10;
 				break;		
 			case	8:
 				Com2RxBuffer[4]='1';
+				for(i=0;i<8;i++){
+					xCarCallCmd[8][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[8][0]=10;
 				break;		
 			case	9:
 				Com2RxBuffer[4]='2';
+				for(i=0;i<8;i++){
+					xCarCallCmd[9][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[9][0]=10;
 				break;		
 			case	10:
 				Com2RxBuffer[4]='4';
+				for(i=0;i<8;i++){
+					xCarCallCmd[10][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[10][0]=10;
 				break;		
 			case	11:
 				Com2RxBuffer[4]='8';
+				for(i=0;i<8;i++){
+					xCarCallCmd[11][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[11][0]=10;
 				break;		
 			case	12:
 				Com2RxBuffer[3]='1';
+				for(i=0;i<8;i++){
+					xCarCallCmd[12][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[12][0]=10;
 				break;		
 			case	13:
 				Com2RxBuffer[3]='2';
+				for(i=0;i<8;i++){
+					xCarCallCmd[13][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[13][0]=10;
 				break;		
 			case	14:
 				Com2RxBuffer[3]='4';
+				for(i=0;i<8;i++){
+					xCarCallCmd[14][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[14][0]=10;
 				break;		
 			case	15:
 				Com2RxBuffer[3]='8';
+				for(i=0;i<8;i++){
+					xCarCallCmd[15][i+1]=Com2RxBuffer[i];
+				}
+				xCarCallCmd[15][0]=10;
 				break;		
 		}
-
-		for(i=0;i<8;i++){
-			xCarCallCmd[i+1]=Com2RxBuffer[i];
-		}
-		xCarCallCmd[0]=10;
 	}
 
 	else if(Can1RxBuf[2]==0x02){   // flr cmd
@@ -488,7 +927,7 @@ unsigned int  __attribute__((section(".usercode"))) ReadInitSetupData(void)
 		Set_Byte_Flash_Buf((unsigned int)(cF_Version_A))           	= VERSION;
 
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyProductIdValue_A)) = 'A';
-		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr1Value_A))     = 8;
+		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr1Value_A))     = 0;
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr2Value_A))     = 0xfd;
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr3Value_A))     = 0xfd;
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr4Value_A))     = 0xfd;

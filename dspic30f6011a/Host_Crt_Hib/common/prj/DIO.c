@@ -1057,42 +1057,42 @@ unsigned int   __attribute__((section(".usercode"))) PLCInData(void)
 //17,18
 	
 
-	if(Com2RxBuffer[myCAR_KEY4] >= 'A')		dsp1= Com2RxBuffer[myCAR_KEY4] - '7';
-	else							dsp1= Com2RxBuffer[myCAR_KEY4] - '0';
-	sRamDArry[x][mCarKey1]=dsp1;
+	if(Com2RxBuffer[myCAR_KEY4] >= 'A')		dsp1 = Com2RxBuffer[myCAR_KEY4] - '7';
+	else									dsp1 = Com2RxBuffer[myCAR_KEY4] - '0';
+	sRamDArry[x][mCarKey1] = dsp1;
 
-	if(Com2RxBuffer[myCAR_KEY3] >= 'A')		dsp1= Com2RxBuffer[myCAR_KEY3] - '7';
-	else							dsp1= Com2RxBuffer[myCAR_KEY3] - '0';
+	if(Com2RxBuffer[myCAR_KEY3] >= 'A')		dsp1 = Com2RxBuffer[myCAR_KEY3] - '7';
+	else									dsp1 = Com2RxBuffer[myCAR_KEY3] - '0';
 	dsp1=(dsp1 << 4);
 	sRamDArry[x][mCarKey1]=(sRamDArry[x][mCarKey1] | dsp1);
 
 
-	if(Com2RxBuffer[myCAR_KEY2] >= 'A')		dsp1= Com2RxBuffer[myCAR_KEY2] - '7';
-	else							dsp1= Com2RxBuffer[myCAR_KEY2] - '0';
-	sRamDArry[x][mCarKey9]=dsp1;
+	if(Com2RxBuffer[myCAR_KEY2] >= 'A')		dsp1 = Com2RxBuffer[myCAR_KEY2] - '7';
+	else									dsp1 = Com2RxBuffer[myCAR_KEY2] - '0';
+	sRamDArry[x][mCarKey9] = dsp1;
 
-	if(Com2RxBuffer[myCAR_KEY1] >= 'A')		dsp1= Com2RxBuffer[myCAR_KEY1] - '7';
-	else							dsp1= Com2RxBuffer[myCAR_KEY1] - '0';
-	dsp1=(dsp1 << 4);
-	sRamDArry[x][mCarKey9]=(sRamDArry[x][mCarKey9] | dsp1);
+	if(Com2RxBuffer[myCAR_KEY1] >= 'A')		dsp1 = Com2RxBuffer[myCAR_KEY1] - '7';
+	else									dsp1 = Com2RxBuffer[myCAR_KEY1] - '0';
+	dsp1 = (dsp1 << 4);
+	sRamDArry[x][mCarKey9] = (sRamDArry[x][mCarKey9] | dsp1);
 
 
 
-	if(Com2RxBuffer[mySERVICE4] >= 'A')		dsp1= Com2RxBuffer[mySERVICE4] - '7';
-	else							dsp1= Com2RxBuffer[mySERVICE4] - '0';
+	if(Com2RxBuffer[mySERVICE4] >= 'A')		dsp1 = Com2RxBuffer[mySERVICE4] - '7';
+	else									dsp1 = Com2RxBuffer[mySERVICE4] - '0';
 	sRamDArry[x][FLR_ON_OFF0]=dsp1;
 
-	if(Com2RxBuffer[mySERVICE3] >= 'A')		dsp1= Com2RxBuffer[mySERVICE3] - '7';
-	else							dsp1= Com2RxBuffer[mySERVICE3] - '0';
+	if(Com2RxBuffer[mySERVICE3] >= 'A')		dsp1 = Com2RxBuffer[mySERVICE3] - '7';
+	else									dsp1 = Com2RxBuffer[mySERVICE3] - '0';
 	dsp1=(dsp1 << 4);
 	sRamDArry[x][FLR_ON_OFF0]=(sRamDArry[x][FLR_ON_OFF0] | dsp1);
 
-	if(Com2RxBuffer[mySERVICE2] >= 'A')		dsp1= Com2RxBuffer[mySERVICE2] - '7';
-	else							dsp1= Com2RxBuffer[mySERVICE2] - '0';
+	if(Com2RxBuffer[mySERVICE2] >= 'A')		dsp1 = Com2RxBuffer[mySERVICE2] - '7';
+	else									dsp1 = Com2RxBuffer[mySERVICE2] - '0';
 	sRamDArry[x][FLR_ON_OFF1]=dsp1;
 
-	if(Com2RxBuffer[mySERVICE1] >= 'A')		dsp1= Com2RxBuffer[mySERVICE1] - '7';
-	else							dsp1= Com2RxBuffer[mySERVICE1] - '0';
+	if(Com2RxBuffer[mySERVICE1] >= 'A')		dsp1 = Com2RxBuffer[mySERVICE1] - '7';
+	else									dsp1 = Com2RxBuffer[mySERVICE1] - '0';
 	dsp1=(dsp1 << 4);
 	sRamDArry[x][FLR_ON_OFF1]=(sRamDArry[x][FLR_ON_OFF1] | dsp1);
 
