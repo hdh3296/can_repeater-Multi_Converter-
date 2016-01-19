@@ -158,12 +158,13 @@ void  __attribute__((section(".usercode"))) PLC_Call(void)
 }
 
 
-
 unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 {
 	unsigned char i;
 	static char bCarCall = 0;
 	static char CarCallFlr = 0;
+	unsigned char curCarKeyState1, curCarKeyState9;
+	
 
 // ÆÄÅ· ½Ã
 	if(xParkingCmd[7] == '1'){
@@ -191,6 +192,11 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 		}
 	}
 
+	curCarKeyState1 =  sRamDArry[0][mCarKey1]; 
+	curCarKeyState9 =  sRamDArry[0][mCarKey9];	
+
+	
+
 	if(xParkingCmd[0] > 0){  //parking
 		Com2SerialTime=0;
  		Com2TxThisPt=0;
@@ -206,15 +212,32 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 		Com2RxBuffer[7]=xParkingCmd[8];
 		xParkingCmd[0]--;
 	}
-	else if (bCarCall)
-	{
+
+	else if(xFlrCmd[0] > 0){   // flr cmd
+		Com2SerialTime=0;
+ 		Com2TxThisPt=0;
+		Com2TxCnt=8;
+
+		Com2RxBuffer[0]=xFlrCmd[1];
+		Com2RxBuffer[1]=xFlrCmd[2];
+		Com2RxBuffer[2]=xFlrCmd[3];
+		Com2RxBuffer[3]=xFlrCmd[4];
+		Com2RxBuffer[4]=xFlrCmd[5];
+		Com2RxBuffer[5]=xFlrCmd[6];
+		Com2RxBuffer[6]=xFlrCmd[7];
+		Com2RxBuffer[7]=xFlrCmd[8];
+		xFlrCmd[0]--;
+	}
+	
+	else if (bCarCall) 
+	{				
 		switch (CarCallFlr)
 		{
 		case 0:
 
 			CarCallFlr = 1;
 
-			if(Com2RxBuffer[22]=='1') xCarCallCmd[0][0] = 0;
+			if (curCarKeyState1 & 0x01) xCarCallCmd[0][0] = 0;
 			
 			if(xCarCallCmd[0][0] > 0){  
 				
@@ -239,7 +262,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 2;	
 		
-			if(Com2RxBuffer[22]=='2') xCarCallCmd[1][0] = 0;
+			if (curCarKeyState1 & 0x02) xCarCallCmd[1][0] = 0;
 			
 			if(xCarCallCmd[1][0] > 0){   //car call
 				CarCallFlr = 2;	
@@ -264,7 +287,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 3;	
 
-			if(Com2RxBuffer[22]=='4') xCarCallCmd[2][0] = 0;
+			if (curCarKeyState1 & 0x04) xCarCallCmd[2][0] = 0;
 			
 			if(xCarCallCmd[2][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -287,7 +310,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 4;	
 
-			if(Com2RxBuffer[22]=='8') xCarCallCmd[3][0] = 0;
+			if (curCarKeyState1 & 0x08) xCarCallCmd[3][0] = 0;
 			
 			if(xCarCallCmd[3][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -310,7 +333,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 5;	
 
-			if(Com2RxBuffer[21]=='1') xCarCallCmd[4][0] = 0;
+			if (curCarKeyState1 & 0x10) xCarCallCmd[4][0] = 0;
 			
 			if(xCarCallCmd[4][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -333,7 +356,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 6;	
 
-			if(Com2RxBuffer[21]=='2') xCarCallCmd[5][0] = 0;
+			if (curCarKeyState1 & 0x20) xCarCallCmd[5][0] = 0;
 			
 			if(xCarCallCmd[5][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -356,7 +379,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 7;	
 
-			if(Com2RxBuffer[21]=='4') xCarCallCmd[6][0] = 0;
+			if (curCarKeyState1 & 0x40) xCarCallCmd[6][0] = 0;
 			
 			if(xCarCallCmd[6][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -379,7 +402,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 8;	
 
-			if(Com2RxBuffer[21]=='8') xCarCallCmd[7][0] = 0;
+			if (curCarKeyState1 & 0x80) xCarCallCmd[7][0] = 0;
 			
 			if(xCarCallCmd[7][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -402,7 +425,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 9;	
 
-			if(Com2RxBuffer[20]=='1') xCarCallCmd[8][0] = 0;
+			if (curCarKeyState9 & 0x01) xCarCallCmd[8][0] = 0;
 			
 			if(xCarCallCmd[8][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -425,7 +448,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 10;	
 
-			if(Com2RxBuffer[20]=='2') xCarCallCmd[9][0] = 0;
+			if (curCarKeyState9 & 0x02) xCarCallCmd[9][0] = 0;
 			
 			if(xCarCallCmd[9][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -448,7 +471,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 11;	
 
-			if(Com2RxBuffer[20]=='4') xCarCallCmd[10][0] = 0;
+			if (curCarKeyState9 & 0x04) xCarCallCmd[10][0] = 0;
 			
 			if(xCarCallCmd[10][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -471,7 +494,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 12;	
 
-			if(Com2RxBuffer[20]=='8') xCarCallCmd[11][0] = 0;
+			if (curCarKeyState9 & 0x08) xCarCallCmd[11][0] = 0;
 			
 			if(xCarCallCmd[11][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -494,7 +517,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 13;	
 
-			if(Com2RxBuffer[19]=='1') xCarCallCmd[12][0] = 0;
+			if (curCarKeyState9 & 0x10) xCarCallCmd[12][0] = 0;
 			
 			if(xCarCallCmd[12][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -517,7 +540,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 14;	
 
-			if(Com2RxBuffer[19]=='2') xCarCallCmd[13][0] = 0;
+			if (curCarKeyState9 & 0x20) xCarCallCmd[13][0] = 0;
 			
 			if(xCarCallCmd[13][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -540,7 +563,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 15;	
 
-			if(Com2RxBuffer[19]=='4') xCarCallCmd[14][0] = 0;
+			if (curCarKeyState9 & 0x40) xCarCallCmd[14][0] = 0;
 			
 			if(xCarCallCmd[14][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -563,7 +586,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 
 			CarCallFlr = 0;	
 
-			if(Com2RxBuffer[19]=='8') xCarCallCmd[15][0] = 0;
+			if (curCarKeyState9 & 0x80) xCarCallCmd[15][0] = 0;
 			
 			if(xCarCallCmd[15][0] > 0){   //car call
 				Com2SerialTime=0;
@@ -591,21 +614,7 @@ unsigned int   __attribute__((section(".usercode"))) RepeatePLCCmdSort(void)
 		}
 	}
 	
-	else if(xFlrCmd[0] > 0){   // flr cmd
-		Com2SerialTime=0;
- 		Com2TxThisPt=0;
-		Com2TxCnt=8;
 
-		Com2RxBuffer[0]=xFlrCmd[1];
-		Com2RxBuffer[1]=xFlrCmd[2];
-		Com2RxBuffer[2]=xFlrCmd[3];
-		Com2RxBuffer[3]=xFlrCmd[4];
-		Com2RxBuffer[4]=xFlrCmd[5];
-		Com2RxBuffer[5]=xFlrCmd[6];
-		Com2RxBuffer[6]=xFlrCmd[7];
-		Com2RxBuffer[7]=xFlrCmd[8];
-		xFlrCmd[0]--;
-	}
 
 	Com2TxStart();
 
@@ -658,112 +667,112 @@ unsigned int   __attribute__((section(".usercode"))) PLCCmdSort(void)
 				for(i=0;i<8;i++){
 					xCarCallCmd[0][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[0][0]=10;
+				xCarCallCmd[0][0]=20;
 				break;		
 			case	1:
 				Com2RxBuffer[6]='2';
 				for(i=0;i<8;i++){
 					xCarCallCmd[1][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[1][0]=10;
+				xCarCallCmd[1][0]=20;
 				break;		
 			case	2:
 				Com2RxBuffer[6]='4';
 				for(i=0;i<8;i++){
 					xCarCallCmd[2][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[2][0]=10;
+				xCarCallCmd[2][0]=20;
 				break;		
 			case	3:
 				Com2RxBuffer[6]='8';
 				for(i=0;i<8;i++){
 					xCarCallCmd[3][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[3][0]=10;
+				xCarCallCmd[3][0]=20;
 				break;		
 			case	4:
 				Com2RxBuffer[5]='1';
 				for(i=0;i<8;i++){
 					xCarCallCmd[4][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[4][0]=10;
+				xCarCallCmd[4][0]=20;
 				break;		
 			case	5:
 				Com2RxBuffer[5]='2';
 				for(i=0;i<8;i++){
 					xCarCallCmd[5][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[5][0]=10;
+				xCarCallCmd[5][0]=20;
 				break;		
 			case	6:
 				Com2RxBuffer[5]='4';
 				for(i=0;i<8;i++){
 					xCarCallCmd[6][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[6][0]=10;
+				xCarCallCmd[6][0]=20;
 				break;		
 			case	7:
 				Com2RxBuffer[5]='8';
 				for(i=0;i<8;i++){
 					xCarCallCmd[7][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[7][0]=10;
+				xCarCallCmd[7][0]=20;
 				break;		
 			case	8:
 				Com2RxBuffer[4]='1';
 				for(i=0;i<8;i++){
 					xCarCallCmd[8][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[8][0]=10;
+				xCarCallCmd[8][0]=20;
 				break;		
 			case	9:
 				Com2RxBuffer[4]='2';
 				for(i=0;i<8;i++){
 					xCarCallCmd[9][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[9][0]=10;
+				xCarCallCmd[9][0]=20;
 				break;		
 			case	10:
 				Com2RxBuffer[4]='4';
 				for(i=0;i<8;i++){
 					xCarCallCmd[10][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[10][0]=10;
+				xCarCallCmd[10][0]=20;
 				break;		
 			case	11:
 				Com2RxBuffer[4]='8';
 				for(i=0;i<8;i++){
 					xCarCallCmd[11][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[11][0]=10;
+				xCarCallCmd[11][0]=20;
 				break;		
 			case	12:
 				Com2RxBuffer[3]='1';
 				for(i=0;i<8;i++){
 					xCarCallCmd[12][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[12][0]=10;
+				xCarCallCmd[12][0]=20;
 				break;		
 			case	13:
 				Com2RxBuffer[3]='2';
 				for(i=0;i<8;i++){
 					xCarCallCmd[13][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[13][0]=10;
+				xCarCallCmd[13][0]=20;
 				break;		
 			case	14:
 				Com2RxBuffer[3]='4';
 				for(i=0;i<8;i++){
 					xCarCallCmd[14][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[14][0]=10;
+				xCarCallCmd[14][0]=20;
 				break;		
 			case	15:
 				Com2RxBuffer[3]='8';
 				for(i=0;i<8;i++){
 					xCarCallCmd[15][i+1]=Com2RxBuffer[i];
 				}
-				xCarCallCmd[15][0]=10;
+				xCarCallCmd[15][0]=20;
 				break;		
 		}
 	}
@@ -927,7 +936,7 @@ unsigned int  __attribute__((section(".usercode"))) ReadInitSetupData(void)
 		Set_Byte_Flash_Buf((unsigned int)(cF_Version_A))           	= VERSION;
 
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyProductIdValue_A)) = 'A';
-		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr1Value_A))     = 0;
+		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr1Value_A))     = 1;
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr2Value_A))     = 0xfd;
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr3Value_A))     = 0xfd;
 		Set_Byte_Flash_Buf((unsigned int)(cF_SetMyAddr4Value_A))     = 0xfd;
@@ -2690,6 +2699,7 @@ void _ISR _T1Interrupt(void)
 
         _T1IF = 0;
         TMR1  = 0;
+	
 
 		if(Can1PollingTimer < 250) 	Can1PollingTimer++;
 		if(Can2PollingTimer < 250) 	Can2PollingTimer++;
@@ -2705,6 +2715,7 @@ if(TestTimer < 1000)	TestTimer++;
         if(msec10 > 10){
             msec10=0;
 		}
+
 
 		msec100++;
         if(msec100 > 100){
