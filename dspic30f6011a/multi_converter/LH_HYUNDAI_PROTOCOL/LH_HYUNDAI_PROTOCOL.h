@@ -34,7 +34,7 @@ typedef	struct x_tagReqHost{
         unsigned int  	HostSid;
         unsigned long   HostEid;
         unsigned char   HostGroup;
-        unsigned char   Ho_Host[4];
+        unsigned char   Ho_Host[4]; // Ho_Host[0] : 현대 엘리베이터 ID
         unsigned char   HostB;
 }tagReqHost;
 
