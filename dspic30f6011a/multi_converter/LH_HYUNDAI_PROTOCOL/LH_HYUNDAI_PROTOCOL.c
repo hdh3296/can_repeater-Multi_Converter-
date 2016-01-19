@@ -172,7 +172,7 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 	ReqHost[0].HostSid=Can1TxSid;
 	ReqHost[0].HostEid=Can1TxEid;
 	ReqHost[0].HostGroup=tmpGroupadr;
-	ReqHost[0].Ho_Host[0]=3;       // my address hyundai  call 6
+	ReqHost[0].Ho_Host[0]=3;       // hyundai  call id
 	ReqHost[0].Ho_Host[1]=0xff;
 	ReqHost[0].Ho_Host[3]=0xff;
 	ReqHost[0].Ho_Host[4]=0xff;
@@ -187,7 +187,7 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 	ReqHost[1].HostSid=Can1TxSid;
 	ReqHost[1].HostEid=Can1TxEid;
 	ReqHost[1].HostGroup=tmpGroupadr;
-	ReqHost[1].Ho_Host[0]=4;		// my address hyundai  call 7
+	ReqHost[1].Ho_Host[0]=4;		// hyundai  call id
 	ReqHost[1].Ho_Host[1]=0xff;
 	ReqHost[1].Ho_Host[3]=0xff;
 	ReqHost[1].Ho_Host[4]=0xff;
@@ -204,7 +204,7 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 	ReqHost[2].HostSid=Can1TxSid;
 	ReqHost[2].HostEid=Can1TxEid;
 	ReqHost[2].HostGroup=tmpGroupadr;
-	ReqHost[2].Ho_Host[0]=5;		// my address hyundai  call 8
+	ReqHost[2].Ho_Host[0]=5;		// hyundai  call id
 	ReqHost[2].Ho_Host[1]=0xff;
 	ReqHost[2].Ho_Host[3]=0xff;
 	ReqHost[2].Ho_Host[4]=0xff;
@@ -220,11 +220,79 @@ unsigned int   __attribute__((section(".usercode"))) My_Project_Init(void)
 	ReqHost[3].HostSid=Can1TxSid;
 	ReqHost[3].HostEid=Can1TxEid;
 	ReqHost[3].HostGroup=tmpGroupadr;
-	ReqHost[3].Ho_Host[0]=6;		// my address hyundai  call 13
+	ReqHost[3].Ho_Host[0]=6;		// hyundai  call id
 	ReqHost[3].Ho_Host[1]=0xff;
 	ReqHost[3].Ho_Host[3]=0xff;
 	ReqHost[3].Ho_Host[4]=0xff;
 	ReqHost[0].HostB=3;
+
+
+//////////////////////////////////////////////////
+
+	tmpCompany=CRT_COMPANY;
+	tmpGroupadr=4;
+	tmpLocaladr=0;    
+	GetTxSidEid(tmpCompany,tmpGroupadr,tmpLocaladr);
+
+	ReqHost[3].HostSid=Can1TxSid;
+	ReqHost[3].HostEid=Can1TxEid;
+	ReqHost[3].HostGroup=tmpGroupadr;
+	ReqHost[3].Ho_Host[0]=7;		// hyundai  call id
+	ReqHost[3].Ho_Host[1]=0xff;
+	ReqHost[3].Ho_Host[3]=0xff;
+	ReqHost[3].Ho_Host[4]=0xff;
+	ReqHost[0].HostB=3;	
+
+
+//////////////////////////////////////////////////
+
+	tmpCompany=CRT_COMPANY;
+	tmpGroupadr=5;
+	tmpLocaladr=0;    
+	GetTxSidEid(tmpCompany,tmpGroupadr,tmpLocaladr);
+
+	ReqHost[3].HostSid=Can1TxSid;
+	ReqHost[3].HostEid=Can1TxEid;
+	ReqHost[3].HostGroup=tmpGroupadr;
+	ReqHost[3].Ho_Host[0]=8;		// hyundai  call id
+	ReqHost[3].Ho_Host[1]=0xff;
+	ReqHost[3].Ho_Host[3]=0xff;
+	ReqHost[3].Ho_Host[4]=0xff;
+	ReqHost[0].HostB=3;	
+
+
+//////////////////////////////////////////////////
+
+	tmpCompany=CRT_COMPANY;
+	tmpGroupadr=6;
+	tmpLocaladr=0;    
+	GetTxSidEid(tmpCompany,tmpGroupadr,tmpLocaladr);
+
+	ReqHost[3].HostSid=Can1TxSid;
+	ReqHost[3].HostEid=Can1TxEid;
+	ReqHost[3].HostGroup=tmpGroupadr;
+	ReqHost[3].Ho_Host[0]=9;		// hyundai  call id
+	ReqHost[3].Ho_Host[1]=0xff;
+	ReqHost[3].Ho_Host[3]=0xff;
+	ReqHost[3].Ho_Host[4]=0xff;
+	ReqHost[0].HostB=3;		
+
+
+//////////////////////////////////////////////////
+
+	tmpCompany=CRT_COMPANY;
+	tmpGroupadr=7;
+	tmpLocaladr=0;    
+	GetTxSidEid(tmpCompany,tmpGroupadr,tmpLocaladr);
+
+	ReqHost[3].HostSid=Can1TxSid;
+	ReqHost[3].HostEid=Can1TxEid;
+	ReqHost[3].HostGroup=tmpGroupadr;
+	ReqHost[3].Ho_Host[0]=10;		// hyundai  call id
+	ReqHost[3].Ho_Host[1]=0xff;
+	ReqHost[3].Ho_Host[3]=0xff;
+	ReqHost[3].Ho_Host[4]=0xff;
+	ReqHost[0].HostB=3;		
 
 
 
